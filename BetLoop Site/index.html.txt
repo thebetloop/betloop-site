@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>The Bet Loop — Coming Soon</title>
+  <meta name="description" content="The Bet Loop is the future of betting — where bettors monetize their edge. Join the early access waitlist." />
+  <meta property="og:title" content="The Bet Loop — Coming Soon" />
+  <meta property="og:description" content="A verified social marketplace for sports picks — built on real performance." />
+  <meta property="og:type" content="website" />
+  <meta name="theme-color" content="#00D68F" />
+  <link rel="icon" href="/favicon.png" />
+  <style>
+    :root {
+      --bg: #0B0F14;      /* deep charcoal */
+      --fg: #ffffff;
+      --muted: #a7b0ba;
+      --accent: #00D68F;  /* Bet Loop neon green */
+      --card: #0f141b;
+      --glass: rgba(255,255,255,0.06);
+      --border: rgba(255,255,255,0.12);
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0; color: var(--fg); background: var(--bg);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, sans-serif;
+      line-height: 1.45;
+      /* subtle brand glow */
+      background-image:
+        radial-gradient(900px 500px at 10% -10%, rgba(0,214,143,0.10), transparent 60%),
+        radial-gradient(700px 400px at 110% 10%, rgba(0,214,143,0.06), transparent 60%),
+        linear-gradient(180deg, #0b0f14 0%, #0b0f14 100%);
+    }
+    .wrap { max-width: 1200px; margin: 0 auto; padding: 28px 20px 48px; }
+    header { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; letter-spacing: .2px; }
+    .logo { width: 36px; height: 36px; border-radius: 12px; background: var(--accent); display: grid; place-items: center; color: #08120E; font-weight: 900; }
+    .cta {
+      display:inline-block; padding: 10px 16px; border-radius: 12px; background: var(--accent); color:#08120E; font-weight: 700;
+      text-decoration:none; border:1px solid transparent; transition: transform .08s ease, filter .2s ease;
+    }
+    .cta:hover { transform: translateY(-1px); filter: brightness(1.03); }
+    main {
+      display: grid; grid-template-columns: 1.05fr 1fr; gap: 28px; align-items: center; min-height: calc(100vh - 140px);
+    }
+    h1 { font-size: clamp(28px, 5vw, 54px); line-height: 1.05; margin: 0 0 12px; font-weight: 900; }
+    .lead { color: var(--muted); font-size: clamp(14px, 2.2vw, 18px); max-width: 52ch; }
+    .badges { display:flex; gap:8px; margin: 16px 0 0; flex-wrap: wrap; }
+    .badge { font-size:12px; color:#c9d2dc; border:1px solid var(--border); background: var(--glass); padding:8px 10px; border-radius:12px; }
+    .panel {
+      background: var(--glass); border:1px solid var(--border); border-radius: 20px; padding: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+      backdrop-filter: blur(6px);
+    }
+    .spline-wrap { height: min(78vh, 720px); min-height: 420px; border-radius: 18px; overflow: hidden; }
+    .grid { display:grid; grid-template-columns: repeat(3, 1fr); gap:10px; margin-top: 14px; }
+    .stat { background: #0e141b; border:1px solid var(--border); border-radius: 14px; padding:10px 12px; }
+    .kpi { color: var(--accent); font-weight: 800; font-size: 20px; }
+    .label { color:#92a0ae; font-size:12px; margin-top: 2px; }
+    .foot {
+      display:flex; gap:10px; margin-top:18px; flex-wrap: wrap;
+    }
+    .ghost {
+      display:inline-block; padding: 10px 14px; border-radius: 12px; background: transparent; color:#dbe7f1;
+      border:1px solid var(--border); text-decoration:none;
+    }
+    .muted { color:#9fb0bf; font-size: 12px; }
+    footer { margin-top: 40px; display:flex; justify-content: space-between; align-items:center; gap: 16px; color:#91a0af; font-size: 13px; }
+    /* mobile */
+    @media (max-width: 980px) {
+      main { grid-template-columns: 1fr; min-height: auto; padding: 24px 0 36px; }
+      .spline-wrap { height: 56vh; min-height: 360px; }
+      .grid { grid-template-columns: repeat(3, 1fr); }
+      header { gap: 12px; }
+    }
+    /* simple fade motion */
+    .fade-in { opacity:0; transform: translateY(10px); animation: fade .6s ease forwards; }
+    .fade-in.d2 { animation-delay: .12s; } .fade-in.d3 { animation-delay: .22s; }
+    @keyframes fade { to { opacity:1; transform: translateY(0); } }
+  </style>
+  <!-- Spline viewer (loads your .splinecode directly) -->
+  <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.28/build/spline-viewer.js"></script>
+</head>
+<body>
+  <div class="wrap">
+    <header class="fade-in">
+      <div class="brand">
+        <div class="logo">BL</div>
+        <div>The Bet Loop</div>
+      </div>
+      <nav>
+        <a class="ghost" href="#waitlist">Join Waitlist</a>
+      </nav>
+    </header>
+
+    <main>
+      <!-- LEFT: copy -->
+      <section class="fade-in d2">
+        <div class="badge" style="display:inline-flex; align-items:center; gap:8px;">
+          <span style="width:8px;height:8px;background:var(--accent);border-radius:50%;display:inline-block;"></span>
+          Pre-launch access
+        </div>
+        <h1>The future of betting — where bettors monetize their edge.</h1>
+        <p class="lead">
+          The Bet Loop is a verified social marketplace for sports picks — built for transparency, reputation, and real performance.
+          Join the early access list to get VIP Discord and launch perks.
+        </p>
+
+        <div class="badges">
+          <div class="badge">Verified track records</div>
+          <div class="badge">Market-priced picks</div>
+          <div class="badge">AI EV tools</div>
+        </div>
+
+        <!-- Waitlist (free + simple): link to a Google Form for now -->
+        <div id="waitlist" class="foot">
+          <a class="cta" href="https://forms.gle/your-google-form" target="_blank" rel="noopener">Join Early Access</a>
+          <a class="ghost" href="mailto:team@thebetloop.com">Contact Us</a>
+        </div>
+
+        <p class="muted" style="margin-top:10px;">No spam. Opt out anytime.</p>
+
+        <!-- quick stats (social proof feel) -->
+        <div class="grid">
+          <div class="stat"><div class="kpi">&gt;2,000</div><div class="label">Bettors surveyed</div></div>
+          <div class="stat"><div class="kpi">71%</div><div class="label">Want a verified market</div></div>
+          <div class="stat"><div class="kpi">+18.4%</div><div class="label">Top capper 30-day ROI*</div></div>
+        </div>
+        <p class="muted" style="margin-top:6px;">*Concept preview. Final product metrics will vary.</p>
+      </section>
+
+      <!-- RIGHT: Spline -->
+      <section class="panel fade-in d3">
+        <div class="spline-wrap">
+          <!-- Your Spline scene (interactive + animated) -->
+          <spline-viewer url="https://prod.spline.design/9jqarNBszlTDknci/scene.splinecode"></spline-viewer>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div>© <span id="y"></span> The Bet Loop</div>
+      <div><span class="muted">This is not a sportsbook. For educational and entertainment purposes.</span></div>
+    </footer>
+  </div>
+
+  <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
