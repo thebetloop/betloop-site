@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>The Bet Loop — Coming Soon</title>
+  <meta name="description" content="The future of sports betting is social, transparent, and creator-led. Join The Bet Loop early access waitlist." />
+  <meta property="og:title" content="The Bet Loop — Coming Soon" />
+  <meta property="og:description" content="A verified social marketplace for sports picks — built on real performance." />
+  <meta property="og:type" content="website" />
+  <meta name="theme-color" content="#0A0D10" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23A9E24A'/%3E%3Cstop offset='1' stop-color='%232FB457'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='15' fill='url(%23g)'/%3E%3Cg fill='none' stroke='%230B1210' stroke-width='5.4' stroke-linecap='round'%3E%3Crect x='23.5' y='23.5' width='17' height='17' rx='1.5'/%3E%3Ccircle cx='16.8' cy='16.8' r='8.6'/%3E%3Ccircle cx='47.2' cy='16.8' r='8.6'/%3E%3Ccircle cx='16.8' cy='47.2' r='8.6'/%3E%3Ccircle cx='47.2' cy='47.2' r='8.6'/%3E%3C/g%3E%3C/svg%3E" />
+</head>
+<body>
+<style>
+  :root {
+    --ink: #0A0D10;
+    --panel: #11161C;
+    --panel-2: #0C1116;
+    --line: rgba(255,255,255,.09);
+    --line-soft: rgba(255,255,255,.06);
+    --lime: #A9E24A;
+    --green: #2FB457;
+    --mint: #52E08A;
+    --live: #FF5C5C;
+    --fg: #F2F6F4;
+    --muted: #93A1AC;
+    --faint: #6B7883;
+    --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--ink);
+    color: var(--fg);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    line-height: 1.5;
+    font-variant-numeric: tabular-nums;
+  }
+  a { color: inherit; }
+  ::selection { background: rgba(82,224,138,.28); }
+
+  /* ---------- live ticker ---------- */
+  .ticker {
+    border-bottom: 1px solid var(--line-soft);
+    background: #07090C;
+    overflow: hidden;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    color: var(--muted);
+  }
+  .ticker-track {
+    display: inline-flex;
+    gap: 40px;
+    padding: 9px 0;
+    white-space: nowrap;
+    animation: slide 36s linear infinite;
+  }
+  .ticker-item { display: inline-flex; align-items: center; gap: 8px; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--mint); flex: none; }
+  .dot.red { background: var(--live); }
+  .t-live { color: var(--mint); }
+  .t-final { color: var(--faint); }
+  @keyframes slide { to { transform: translateX(-50%); } }
+
+  /* ---------- shell ---------- */
+  .wrap { max-width: 1160px; margin: 0 auto; padding: 0 22px; }
+  header.site {
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    padding: 20px 0;
+  }
+  .brand { display: flex; align-items: center; gap: 12px; font-weight: 800; font-size: 19px; letter-spacing: .01em; text-decoration: none; }
+  .logo { width: 42px; height: 42px; flex: none; filter: drop-shadow(0 4px 14px rgba(47,180,87,.35)); }
+  nav.main { display: flex; align-items: center; gap: 6px; }
+  .navlink {
+    text-decoration: none; color: var(--muted); font-size: 14.5px; font-weight: 600;
+    padding: 9px 14px; border-radius: 10px;
+  }
+  .navlink:hover, .navlink:focus-visible { color: var(--fg); background: var(--panel); }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 11px 18px; border-radius: 12px; text-decoration: none;
+    font-weight: 800; font-size: 15px; border: 1px solid transparent;
+    transition: transform .1s ease, filter .15s ease;
+  }
+  .btn:hover { transform: translateY(-1px); }
+  .btn:focus-visible, nav.main a:focus-visible, .tab:focus-visible { outline: 2px solid var(--mint); outline-offset: 2px; }
+  .btn-fill { background: linear-gradient(135deg, var(--lime), var(--green)); color: #08120C; box-shadow: 0 6px 20px rgba(47,180,87,.3); }
+  .btn-fill:hover { filter: brightness(1.05); }
+  .btn-ghost { border-color: var(--line); color: var(--fg); background: var(--panel-2); }
+  .btn-ghost:hover { border-color: rgba(255,255,255,.2); }
+
+  /* ---------- hero ---------- */
+  .hero {
+    display: grid; grid-template-columns: 1.05fr .95fr; gap: 48px; align-items: center;
+    padding: 44px 0 72px;
+  }
+  .pill {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 12px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase;
+    color: var(--mint); border: 1px solid rgba(82,224,138,.35); background: rgba(82,224,138,.07);
+    padding: 7px 13px; border-radius: 99px;
+  }
+  .pill .dot { animation: pulse 1.6s ease-in-out infinite; }
+  @keyframes pulse { 50% { opacity: .35; } }
+  h1 {
+    margin: 18px 0 16px; font-weight: 900; letter-spacing: -.02em;
+    font-size: clamp(32px, 4.6vw, 54px); line-height: 1.06; text-wrap: balance;
+  }
+  .grad {
+    background: linear-gradient(100deg, var(--lime), var(--green) 80%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .lead { color: var(--muted); font-size: 17px; max-width: 54ch; margin: 0; }
+  .cta-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 26px; align-items: center; }
+  .fineprint { color: var(--faint); font-size: 12.5px; margin-top: 12px; }
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 34px; max-width: 520px; }
+  .stat { background: var(--panel-2); border: 1px solid var(--line); border-radius: 14px; padding: 13px 15px; }
+  .stat b { display: block; font-family: var(--mono); font-size: 21px; color: var(--mint); letter-spacing: -.01em; }
+  .stat span { color: var(--faint); font-size: 12px; }
+
+  /* ---------- phone mockup ---------- */
+  .stage { display: grid; place-items: center; position: relative; }
+  .stage::before {
+    content: ""; position: absolute; inset: 8% 12%;
+    background: radial-gradient(closest-side, rgba(47,180,87,.22), transparent 72%);
+    filter: blur(12px); pointer-events: none;
+  }
+  .phone {
+    position: relative; width: min(340px, 92vw);
+    border: 1px solid rgba(255,255,255,.14); border-radius: 44px;
+    background: #06090B; padding: 12px;
+    box-shadow: 0 30px 70px rgba(0,0,0,.55);
+  }
+  .screen { border-radius: 33px; overflow: hidden; background: var(--ink); border: 1px solid var(--line-soft); }
+  .app-top { display: flex; align-items: center; gap: 9px; padding: 13px 14px 11px; border-bottom: 1px solid var(--line-soft); }
+  .app-top .logo { width: 27px; height: 27px; filter: none; }
+  .app-top b { font-size: 14.5px; }
+  .app-top .bell { margin-left: auto; color: var(--faint); display: flex; }
+  .wc {
+    margin: 11px; border-radius: 18px; padding: 15px 14px;
+    border: 1px solid rgba(213,178,74,.35);
+    background:
+      radial-gradient(120% 120% at 100% 0%, rgba(213,178,74,.16), transparent 55%),
+      radial-gradient(110% 130% at 0% 100%, rgba(47,180,87,.14), transparent 55%),
+      #0C1014;
+  }
+  .wc .eyebrow { font-size: 9.5px; letter-spacing: .18em; color: #C8B37A; font-weight: 700; }
+  .wc h3 { margin: 6px 0 4px; font-size: 20px; font-weight: 900; line-height: 1.1; letter-spacing: -.01em; }
+  .wc p { margin: 0; color: var(--muted); font-size: 11.5px; }
+  .tabs { display: flex; gap: 5px; padding: 2px 11px 10px; }
+  .tab {
+    flex: 1; border: 1px solid transparent; background: transparent; color: var(--faint);
+    font: 700 12px/1 inherit; font-family: inherit; padding: 8px 4px; border-radius: 99px; cursor: pointer;
+  }
+  .tab[aria-selected="true"] { background: var(--panel); color: var(--fg); border-color: var(--line); }
+  .feed { display: grid; gap: 10px; padding: 0 11px 13px; min-height: 246px; align-content: start; }
+  .feed[hidden] { display: none; }
+  .card { border: 1px solid var(--line); background: var(--panel-2); border-radius: 16px; padding: 12px 13px; }
+  .card .row { display: flex; align-items: center; gap: 7px; }
+  .chip {
+    font-size: 9.5px; font-weight: 800; letter-spacing: .06em; border-radius: 99px; padding: 4px 8px;
+  }
+  .chip-win { color: var(--mint); border: 1px solid rgba(82,224,138,.4); background: rgba(82,224,138,.08); }
+  .chip-live { color: var(--live); border: 1px solid rgba(255,92,92,.4); background: rgba(255,92,92,.08); }
+  .chip-free { color: var(--muted); border: 1px solid var(--line); }
+  .card h4 { margin: 8px 0 3px; font-size: 14px; font-weight: 800; }
+  .card .sub { color: var(--faint); font-size: 11px; font-family: var(--mono); }
+  .teamline { display: flex; justify-content: space-between; font-size: 13px; font-weight: 700; margin-top: 7px; }
+  .teamline .score { font-family: var(--mono); color: var(--mint); }
+  .msg { display: flex; gap: 8px; align-items: baseline; font-size: 11.5px; margin-top: 7px; }
+  .msg b { color: var(--mint); font-weight: 700; }
+  .msg span { color: var(--muted); }
+  .avatar { width: 24px; height: 24px; border-radius: 50%; flex: none; background: linear-gradient(135deg, #9EC4E8, #52E08A); }
+  .handle { font-size: 12px; font-weight: 700; }
+  .handle small { color: var(--faint); font-weight: 500; }
+  .trendline { display: flex; justify-content: space-between; align-items: baseline; font-size: 12.5px; padding: 6px 0; border-bottom: 1px solid var(--line-soft); }
+  .trendline:last-child { border-bottom: 0; }
+  .trendline .n { color: var(--faint); font-family: var(--mono); font-size: 11px; }
+  .trendline .v { color: var(--mint); font-family: var(--mono); font-size: 11.5px; }
+  .app-nav { display: flex; justify-content: space-around; align-items: center; border-top: 1px solid var(--line-soft); padding: 9px 6px 12px; color: var(--faint); font-size: 9.5px; font-weight: 600; }
+  .app-nav .item { display: grid; place-items: center; gap: 3px; }
+  .app-nav .item.on { color: var(--mint); }
+  .app-nav .fab {
+    width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center;
+    background: linear-gradient(135deg, var(--lime), var(--green)); color: #08120C;
+    font-size: 22px; font-weight: 800; margin-top: -20px;
+    box-shadow: 0 6px 18px rgba(47,180,87,.45); line-height: 1;
+  }
+
+  /* ---------- features ---------- */
+  .section { padding: 30px 0 70px; }
+  .kicker { font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--mint); }
+  h2 { font-size: clamp(24px, 3vw, 34px); font-weight: 900; letter-spacing: -.015em; margin: 10px 0 8px; text-wrap: balance; }
+  .section > .lead { margin-bottom: 34px; }
+  .features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .feature { border: 1px solid var(--line); background: var(--panel-2); border-radius: 18px; padding: 22px; }
+  .feature .icon {
+    width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center;
+    background: rgba(82,224,138,.09); border: 1px solid rgba(82,224,138,.25); color: var(--mint);
+    margin-bottom: 14px;
+  }
+  .feature h3 { margin: 0 0 6px; font-size: 17px; font-weight: 800; }
+  .feature p { margin: 0; color: var(--muted); font-size: 14px; }
+
+  /* ---------- waitlist band ---------- */
+  .band {
+    border: 1px solid rgba(82,224,138,.3); border-radius: 22px;
+    padding: 40px 32px; text-align: center;
+    background:
+      radial-gradient(90% 140% at 50% 0%, rgba(47,180,87,.16), transparent 60%),
+      var(--panel-2);
+    margin-bottom: 64px;
+  }
+  .band h2 { margin-top: 0; }
+  .band .lead { margin: 0 auto 24px; }
+
+  footer.site {
+    border-top: 1px solid var(--line-soft); padding: 22px 0 34px;
+    display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+    color: var(--faint); font-size: 13px;
+  }
+
+  @media (max-width: 920px) {
+    .hero { grid-template-columns: 1fr; gap: 40px; padding-bottom: 56px; }
+    .features { grid-template-columns: 1fr; }
+    nav.main a.navlink { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ticker-track { animation: none; }
+    .pill .dot { animation: none; }
+    html { scroll-behavior: auto; }
+  }
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="blg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#A9E24A"/><stop offset="1" stop-color="#2FB457"/>
+    </linearGradient>
+    <symbol id="bl-mark" viewBox="0 0 64 64">
+      <rect width="64" height="64" rx="15" fill="url(#blg)"/>
+      <g fill="none" stroke="#0B1210" stroke-width="5.4" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="23.5" y="23.5" width="17" height="17" rx="1.5"/>
+        <circle cx="16.8" cy="16.8" r="8.6"/>
+        <circle cx="47.2" cy="16.8" r="8.6"/>
+        <circle cx="16.8" cy="47.2" r="8.6"/>
+        <circle cx="47.2" cy="47.2" r="8.6"/>
+      </g>
+    </symbol>
+  </defs>
+</svg>
+
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-track">
+    <span class="ticker-item"><span class="dot"></span>PIT @ WSH <span class="t-live">LIVE 4–4</span></span>
+    <span class="ticker-item"><span class="dot"></span>BAL @ CIN <span class="t-live">LIVE 1–2</span></span>
+    <span class="ticker-item"><span class="dot red"></span>MIN @ NYY <span class="t-final">FINAL 11–4</span></span>
+    <span class="ticker-item"><span class="dot"></span>LAD @ SF <span class="t-live">LIVE 2–0</span></span>
+    <span class="ticker-item"><span class="dot red"></span>HOU @ TEX <span class="t-final">FINAL 3–5</span></span>
+    <span class="ticker-item"><span class="dot"></span>PIT @ WSH <span class="t-live">LIVE 4–4</span></span>
+    <span class="ticker-item"><span class="dot"></span>BAL @ CIN <span class="t-live">LIVE 1–2</span></span>
+    <span class="ticker-item"><span class="dot red"></span>MIN @ NYY <span class="t-final">FINAL 11–4</span></span>
+    <span class="ticker-item"><span class="dot"></span>LAD @ SF <span class="t-live">LIVE 2–0</span></span>
+    <span class="ticker-item"><span class="dot red"></span>HOU @ TEX <span class="t-final">FINAL 3–5</span></span>
+  </div>
+</div>
+
+<div class="wrap">
+  <header class="site">
+    <a class="brand" href="#">
+      <svg class="logo" aria-hidden="true"><use href="#bl-mark"/></svg>
+      The Bet Loop
+    </a>
+    <nav class="main" aria-label="Main">
+      <a class="navlink" href="#preview">Preview</a>
+      <a class="navlink" href="#features">Inside the loop</a>
+      <a class="btn btn-fill" href="#waitlist">Join Waitlist</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div>
+        <span class="pill"><span class="dot"></span>Pre-launch access</span>
+        <h1>The future of sports betting is <span class="grad">social</span>, <span class="grad">transparent</span>, and <span class="grad">creator&#8209;led</span>.</h1>
+        <p class="lead">
+          The Bet Loop is a verified social marketplace for sports picks. Every record is graded
+          from final scores — no screenshots, no deleted losses. Join early access for VIP Discord
+          and launch perks.
+        </p>
+        <div class="cta-row">
+          <a class="btn btn-fill" href="https://forms.gle/your-google-form" target="_blank" rel="noopener">Join Early Access</a>
+          <a class="btn btn-ghost" href="mailto:team@thebetloop.com">Contact Us</a>
+        </div>
+        <p class="fineprint">No spam. Opt out anytime.</p>
+        <div class="stats">
+          <div class="stat"><b>&gt;2,000</b><span>Bettors surveyed</span></div>
+          <div class="stat"><b>71%</b><span>Want a verified market</span></div>
+          <div class="stat"><b>+18.4%</b><span>Top capper 30-day ROI*</span></div>
+        </div>
+        <p class="fineprint">*Concept preview. Final product metrics will vary.</p>
+      </div>
+
+      <div class="stage" id="preview">
+        <div class="phone" aria-label="App preview">
+          <div class="screen">
+            <div class="app-top">
+              <svg class="logo" aria-hidden="true"><use href="#bl-mark"/></svg>
+              <b>Bet Loop</b>
+              <span class="bell" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+              </span>
+            </div>
+
+            <div class="wc">
+              <div class="eyebrow">WORLD CUP COMMAND CENTER</div>
+              <h3>World Cup <span class="grad">lives here.</span></h3>
+              <p>Live matches, verified picks, and creator insight for every moment.</p>
+            </div>
+
+            <div class="tabs" role="tablist" aria-label="Feed filter">
+              <button class="tab" role="tab" aria-selected="true" data-tab="all">All</button>
+              <button class="tab" role="tab" aria-selected="false" data-tab="social">Social</button>
+              <button class="tab" role="tab" aria-selected="false" data-tab="picks">Picks</button>
+              <button class="tab" role="tab" aria-selected="false" data-tab="trending">Trending</button>
+            </div>
+
+            <div class="feed" data-panel="all">
+              <div class="card">
+                <div class="row">
+                  <span class="avatar"></span>
+                  <span class="handle">acraidan <small>· 1d</small></span>
+                  <span class="chip chip-win" style="margin-left:auto">SYSTEM WIN</span>
+                </div>
+                <h4>Minnesota Twins @ New York Yankees</h4>
+                <div class="sub">FINAL 11–4 · CLOSED · WON</div>
+              </div>
+              <div class="card">
+                <div class="row">
+                  <span class="chip chip-free">MLB</span>
+                  <span class="chip chip-live" style="margin-left:auto">● LIVE</span>
+                </div>
+                <div class="teamline"><span>Pittsburgh Pirates</span><span class="score">4</span></div>
+                <div class="teamline"><span>Washington Nationals</span><span class="score">4</span></div>
+              </div>
+            </div>
+
+            <div class="feed" data-panel="social" hidden>
+              <div class="card">
+                <div class="row">
+                  <span class="chip chip-free">GAME CHAT</span>
+                  <span class="chip chip-live" style="margin-left:auto">● LIVE</span>
+                </div>
+                <h4>PIT @ WSH · Game Chat</h4>
+                <div class="msg"><b>loopfan22</b><span>Nats bullpen is cooked, fade the 8th</span></div>
+                <div class="msg"><b>acraidan</b><span>live line just moved to +125, value</span></div>
+                <div class="msg"><b>edgehunter</b><span>tied 4–4, extras incoming</span></div>
+              </div>
+            </div>
+
+            <div class="feed" data-panel="picks" hidden>
+              <div class="card">
+                <div class="row">
+                  <span class="avatar"></span>
+                  <span class="handle">acraidan <small>· 1d</small></span>
+                  <span class="chip chip-win" style="margin-left:auto">SYSTEM WIN</span>
+                </div>
+                <h4>Twins ML @ Yankees</h4>
+                <div class="sub">FINAL 11–4 · VERIFIED FROM FINAL</div>
+              </div>
+              <div class="card">
+                <div class="row">
+                  <span class="avatar" style="background:linear-gradient(135deg,#E8C49E,#E0A252)"></span>
+                  <span class="handle">edgehunter <small>· 3h</small></span>
+                  <span class="chip chip-free" style="margin-left:auto">FREE</span>
+                </div>
+                <h4>Orioles +1.5 @ Reds</h4>
+                <div class="sub">LIVE 1–2 · GRADING AT FINAL</div>
+              </div>
+            </div>
+
+            <div class="feed" data-panel="trending" hidden>
+              <div class="card">
+                <div class="trendline"><span><span class="n">1</span> World Cup futures</span><span class="v">+312%</span></div>
+                <div class="trendline"><span><span class="n">2</span> Yankees run lines</span><span class="v">+147%</span></div>
+                <div class="trendline"><span><span class="n">3</span> acraidan's system</span><span class="v">+96%</span></div>
+                <div class="trendline"><span><span class="n">4</span> Live MLB chats</span><span class="v">+71%</span></div>
+              </div>
+            </div>
+
+            <div class="app-nav" aria-hidden="true">
+              <span class="item on"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V21h-6v-6h-6v6H3z"/></svg>Feed</span>
+              <span class="item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 8h18M8 3v18"/></svg>Reels</span>
+              <span class="fab">+</span>
+              <span class="item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>Pick Center</span>
+              <span class="item"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg>More</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="features">
+      <span class="kicker">Inside the loop</span>
+      <h2>Built on real performance, not screenshots.</h2>
+      <p class="lead">Everything on the landing preview above is a real surface in the app.</p>
+      <div class="features">
+        <div class="feature">
+          <div class="icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5z"/><path d="m9 12 2 2 4-4"/></svg>
+          </div>
+          <h3>Verified track records</h3>
+          <p>Every pick is linked to a real game and graded from the final score. Records can't be edited, cherry-picked, or deleted.</p>
+        </div>
+        <div class="feature">
+          <div class="icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-8 8H4l2-3a8 8 0 1 1 15-5z"/><path d="M8.5 12h.01M12 12h.01M15.5 12h.01"/></svg>
+          </div>
+          <h3>Game Chat Hub</h3>
+          <p>Real-time scores, odds, and discussion for every live game — one loop per matchup, from first pitch to final.</p>
+        </div>
+        <div class="feature">
+          <div class="icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M6 21V10m6 11V4m6 17v-9"/></svg>
+          </div>
+          <h3>Pick Center</h3>
+          <p>Market-priced picks with AI EV tools. Creators monetize their edge; buyers see the full graded history before they pay.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="waitlist" style="padding-top:0">
+      <div class="band">
+        <h2>Get in before the loop opens.</h2>
+        <p class="lead">Early access members get VIP Discord, launch perks, and first pick of creator handles.</p>
+        <a class="btn btn-fill" href="https://forms.gle/your-google-form" target="_blank" rel="noopener">Join Early Access</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site">
+    <div>© <span id="y">2026</span> The Bet Loop</div>
+    <div>This is not a sportsbook. For educational and entertainment purposes.</div>
+  </footer>
+</div>
+
+<script>
+  document.getElementById('y').textContent = new Date().getFullYear();
+  const tabs = document.querySelectorAll('.tab');
+  const panels = document.querySelectorAll('.feed');
+  tabs.forEach(tab => tab.addEventListener('click', () => {
+    tabs.forEach(t => t.setAttribute('aria-selected', String(t === tab)));
+    panels.forEach(p => p.hidden = p.dataset.panel !== tab.dataset.tab);
+  }));
+</script>
+</body>
+</html>
