@@ -48,6 +48,7 @@
     line-height: 1.5;
     font-variant-numeric: tabular-nums;
     -webkit-font-smoothing: antialiased;
+    overflow-x: clip;
   }
   a { color: inherit; }
   ::selection { background: rgba(82,224,138,.28); }
@@ -312,6 +313,69 @@
     box-shadow: 0 6px 18px rgba(47,180,87,.45), inset 0 1px 0 rgba(255,255,255,.3); line-height: 1;
   }
 
+  /* ---------- 3D showcase ---------- */
+  .showcase {
+    position: relative;
+    margin: 18px calc(50% - 50vw) 74px;
+    height: clamp(540px, 82vh, 780px);
+    overflow: hidden;
+    background: #05070A;
+    border-block: 1px solid var(--line-soft);
+  }
+  .spline-host, .showcase-fallback { position: absolute; inset: 0; }
+  .spline-host spline-viewer { width: 100%; height: 100%; display: block; }
+  .spline-host { opacity: 0; transition: opacity 1.4s ease; }
+  .showcase.live .spline-host { opacity: 1; }
+  .showcase-fallback {
+    display: grid; place-items: center;
+    background:
+      radial-gradient(56% 68% at 50% 42%, rgba(47,180,87,.16), transparent 70%),
+      radial-gradient(40% 46% at 62% 60%, rgba(169,226,74,.07), transparent 70%),
+      #05070A;
+    transition: opacity 1.2s ease;
+  }
+  .showcase.live .showcase-fallback { opacity: 0; pointer-events: none; }
+  .fallback-knot { width: clamp(200px, 30vh, 300px); height: clamp(200px, 30vh, 300px); position: relative; }
+  .fallback-knot .ring {
+    position: absolute; inset: -13%; border-radius: 50%;
+    border: 1px solid rgba(82,224,138,.14);
+    border-top-color: rgba(82,224,138,.4);
+    animation: orbit 9s linear infinite;
+  }
+  .fallback-knot .ring.r2 { inset: -24%; border-top-color: rgba(216,181,74,.28); animation-duration: 15s; animation-direction: reverse; }
+  .fallback-knot svg { width: 100%; height: 100%; opacity: .9; filter: drop-shadow(0 0 34px rgba(47,180,87,.4)); animation: hover-float 7s ease-in-out infinite; }
+  @keyframes orbit { to { transform: rotate(360deg); } }
+  @keyframes hover-float { 50% { transform: translateY(-12px); } }
+  .scrim { position: absolute; inset: 0; pointer-events: none; }
+  .scrim::before, .scrim::after {
+    content: ""; position: absolute; left: 0; right: 0; height: 130px;
+  }
+  .scrim::before { top: 0; background: linear-gradient(180deg, var(--ink), transparent); }
+  .scrim::after { bottom: 0; background: linear-gradient(0deg, var(--ink), transparent); }
+  .showcase-copy {
+    position: absolute; z-index: 2; left: 0; right: 0; bottom: 0;
+    padding: 0 22px 46px;
+    max-width: 1160px; margin: 0 auto;
+    pointer-events: none;
+  }
+  .showcase-copy .kicker { text-shadow: 0 2px 14px rgba(0,0,0,.6); }
+  .showcase-copy h2 { max-width: 14ch; margin-bottom: 6px; font-size: clamp(26px, 3.4vw, 40px); text-shadow: 0 2px 18px rgba(0,0,0,.65); }
+  .showcase-copy p { color: var(--muted); font-size: 14.5px; max-width: 44ch; margin: 0; text-shadow: 0 1px 10px rgba(0,0,0,.6); }
+  .hint {
+    position: absolute; z-index: 2; right: max(22px, calc(50vw - 558px)); bottom: 46px;
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 10.5px; font-weight: 700; letter-spacing: .14em; color: var(--mint);
+    border: 1px solid rgba(82,224,138,.32); background: rgba(5,7,10,.55);
+    backdrop-filter: blur(8px);
+    padding: 9px 14px; border-radius: 99px;
+    opacity: 0; transform: translateY(6px);
+    transition: opacity .6s ease .8s, transform .6s ease .8s;
+    pointer-events: none;
+  }
+  .showcase.live .hint { opacity: 1; transform: none; }
+  .showcase.live.touched .hint { opacity: 0; transition-delay: 0s; }
+  .hint svg { animation: orbit 6s linear infinite; }
+
   /* ---------- features ---------- */
   .section { padding: 26px 0 72px; }
   .kicker { font-size: 11.5px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--mint); }
@@ -375,6 +439,7 @@
     .pill .dot { animation: none; }
     .rise { animation: none; opacity: 1; transform: none; }
     .reveal { transition: none; opacity: 1; transform: none; }
+    .fallback-knot svg, .fallback-knot .ring, .hint svg { animation: none; }
     .feature, .btn, .stat { transition: none; }
     html { scroll-behavior: auto; }
   }
@@ -430,6 +495,7 @@
     </a>
     <nav class="main" aria-label="Main">
       <a class="navlink" href="#preview">Preview</a>
+      <a class="navlink" href="#motion">In motion</a>
       <a class="navlink" href="#features">Inside the loop</a>
       <a class="btn btn-fill" href="#waitlist">Join Waitlist</a>
     </nav>
@@ -619,6 +685,27 @@
       </div>
     </section>
 
+    <section class="showcase" id="motion" aria-label="Interactive 3D brand experience">
+      <div class="showcase-fallback" aria-hidden="true">
+        <div class="fallback-knot">
+          <span class="ring"></span>
+          <span class="ring r2"></span>
+          <svg viewBox="0 0 64 64" aria-hidden="true"><use href="#bl-knot"/></svg>
+        </div>
+      </div>
+      <div class="spline-host" aria-hidden="true"></div>
+      <div class="scrim" aria-hidden="true"></div>
+      <div class="showcase-copy">
+        <span class="kicker">The mark, in motion</span>
+        <h2>Step inside the loop.</h2>
+        <p>Connection in constant motion — four interlocking sides, rendered live. This is the energy the whole product is built on.</p>
+      </div>
+      <span class="hint" aria-hidden="true">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 2a15.3 15.3 0 0 1 0 20M12 2a15.3 15.3 0 0 0 0 20" transform="rotate(60 12 12)"/></svg>
+        DRAG TO EXPLORE
+      </span>
+    </section>
+
     <section class="section" id="features">
       <span class="kicker">Inside the loop</span>
       <h2>Built on real performance, not screenshots.</h2>
@@ -684,6 +771,54 @@
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
   }, { threshold: 0.15 });
   document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // 3D showcase: lazy-load the Spline scene as the section approaches.
+  // The branded fallback poster stays up until the scene is actually rendering,
+  // and remains if the viewer can't load (blocked network, save-data, errors).
+  const SPLINE_SCENE = 'https://prod.spline.design/9jqarNBszlTDknci/scene.splinecode';
+  const SPLINE_VIEWER = 'https://unpkg.com/@splinetool/viewer@1.9.28/build/spline-viewer.js';
+  const stage3d = document.getElementById('motion');
+  let splineStarted = false;
+
+  function startSpline() {
+    if (splineStarted) return;
+    splineStarted = true;
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (navigator.connection && navigator.connection.saveData) return;
+
+    ['https://unpkg.com', 'https://prod.spline.design'].forEach(href => {
+      const l = document.createElement('link');
+      l.rel = 'preconnect'; l.href = href; l.crossOrigin = '';
+      document.head.appendChild(l);
+    });
+
+    const s = document.createElement('script');
+    s.type = 'module';
+    s.src = SPLINE_VIEWER;
+    document.head.appendChild(s);
+
+    customElements.whenDefined('spline-viewer').then(() => {
+      const v = document.createElement('spline-viewer');
+      v.setAttribute('url', SPLINE_SCENE);
+      stage3d.querySelector('.spline-host').appendChild(v);
+
+      const goLive = () => stage3d.classList.add('live');
+      v.addEventListener('load', goLive, { once: true });
+      // Belt and braces: reveal once the viewer's canvas is actually painting.
+      let checks = 0;
+      const poll = setInterval(() => {
+        const canvas = v.shadowRoot && v.shadowRoot.querySelector('canvas');
+        if (canvas && canvas.width > 0) { clearInterval(poll); setTimeout(goLive, 400); }
+        if (++checks > 40) clearInterval(poll);
+      }, 250);
+
+      v.addEventListener('pointerdown', () => stage3d.classList.add('touched'), { once: true });
+    });
+  }
+
+  new IntersectionObserver((entries, obs) => {
+    if (entries[0].isIntersecting) { startSpline(); obs.disconnect(); }
+  }, { rootMargin: '600px' }).observe(stage3d);
 </script>
 </body>
 </html>
