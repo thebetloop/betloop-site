@@ -55,13 +55,26 @@
 
   /* ---------- live ticker ---------- */
   .ticker {
+    display: flex; align-items: stretch;
     border-bottom: 1px solid var(--line-soft);
     background: #050708;
-    overflow: hidden;
     font-family: var(--mono);
     font-size: 12.5px;
     color: var(--fg);
   }
+  .ticker-bug {
+    flex: none; display: inline-flex; align-items: center; gap: 7px;
+    padding: 0 14px 0 18px;
+    color: var(--live); font-weight: 700; font-size: 10.5px; letter-spacing: .22em;
+    border-right: 1px solid var(--line-soft);
+  }
+  .ticker-bug .dot { background: var(--live); animation: pulse 1.4s ease-in-out infinite; }
+  .ticker-view {
+    flex: 1; overflow: hidden;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 3%, #000 97%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 3%, #000 97%, transparent);
+  }
+  .ticker:hover .ticker-track { animation-play-state: paused; }
   .ticker-track {
     display: inline-flex;
     gap: 44px;
@@ -144,14 +157,16 @@
   .lead { color: var(--muted); font-size: 16.5px; max-width: 54ch; margin: 0; }
   .cta-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; align-items: center; }
   .fineprint { color: var(--faint); font-size: 12.5px; margin-top: 12px; }
-  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 36px; max-width: 520px; }
-  .stat {
-    background: var(--panel-2); border: 1px solid var(--line); border-radius: 14px; padding: 14px 15px;
+  .board {
+    display: flex; margin-top: 36px; max-width: 560px;
+    border: 1px solid var(--line); background: var(--panel-2); border-radius: 16px; overflow: hidden;
     transition: border-color .2s ease;
   }
-  .stat:hover { border-color: rgba(82,224,138,.3); }
-  .stat b { display: block; font-family: var(--mono); font-size: 21px; color: var(--mint); letter-spacing: -.01em; }
-  .stat span { color: var(--faint); font-size: 12px; }
+  .board:hover { border-color: rgba(82,224,138,.28); }
+  .board .cell { flex: 1; padding: 15px 18px 13px; }
+  .board .cell + .cell { border-left: 1px solid var(--line-soft); }
+  .board b { display: block; font-family: var(--mono); font-size: 22px; font-weight: 700; color: var(--mint); letter-spacing: -.01em; }
+  .board span { display: block; margin-top: 3px; color: var(--faint); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; font-weight: 600; }
 
   /* hero load sequence */
   .rise { opacity: 0; transform: translateY(12px); animation: rise .6s cubic-bezier(.2,.7,.3,1) forwards; }
@@ -385,23 +400,59 @@
     letter-spacing: -.01em; margin: 10px 0 8px; text-wrap: balance;
   }
   .section > .lead { margin-bottom: 36px; }
-  .features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
-  .feature {
-    border: 1px solid var(--line); background: var(--panel-2); border-radius: 18px; padding: 24px 22px;
+  .evidence { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .ev {
+    border: 1px solid var(--line); background: var(--panel-2); border-radius: 18px; overflow: hidden;
     transition: transform .2s ease, border-color .2s ease, box-shadow .25s ease;
   }
-  .feature:hover {
+  .ev:hover {
     transform: translateY(-3px);
     border-color: rgba(82,224,138,.32);
     box-shadow: 0 14px 34px rgba(0,0,0,.35);
   }
-  .feature .icon {
-    width: 42px; height: 42px; border-radius: 13px; display: grid; place-items: center;
-    background: rgba(82,224,138,.09); border: 1px solid rgba(82,224,138,.25); color: var(--mint);
-    margin-bottom: 15px;
+  .ev-demo {
+    position: relative; min-height: 172px;
+    display: grid; place-items: center; padding: 22px 20px;
+    border-bottom: 1px solid var(--line-soft);
+    background: radial-gradient(120% 100% at 50% 0%, rgba(47,180,87,.07), transparent 62%);
   }
-  .feature h3 { margin: 0 0 6px; font-family: var(--display); font-size: 16.5px; font-weight: 800; }
-  .feature p { margin: 0; color: var(--muted); font-size: 14px; }
+  .ev-text { padding: 17px 20px 20px; }
+  .ev-text h3 { margin: 0 0 6px; font-family: var(--display); font-size: 16.5px; font-weight: 800; }
+  .ev-text p { margin: 0; color: var(--muted); font-size: 13.5px; }
+
+  .slip {
+    position: relative; width: 204px;
+    background: #0F141A; border: 1px solid var(--line); border-radius: 12px; padding: 13px 14px;
+    transform: rotate(-2deg);
+    box-shadow: 0 14px 28px rgba(0,0,0,.42);
+  }
+  .slip .t { font-size: 12px; font-weight: 800; letter-spacing: .01em; }
+  .slip .d { font-family: var(--mono); font-size: 10px; color: var(--faint); margin-top: 3px; }
+  .slip .dash { border-top: 1px dashed rgba(255,255,255,.15); margin: 10px 0 9px; }
+  .slip .row2 { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 10.5px; color: var(--muted); }
+  .stamp {
+    position: absolute; right: -12px; top: -13px; transform: rotate(7deg);
+    color: var(--mint); border: 1.5px solid rgba(82,224,138,.55); border-radius: 8px;
+    padding: 5px 9px; font-size: 9.5px; font-weight: 900; letter-spacing: .16em;
+    background: rgba(7,16,12,.88);
+  }
+
+  .chatdemo { width: 228px; display: grid; gap: 7px; }
+  .bubble { border: 1px solid var(--line); background: #0F141A; border-radius: 11px; padding: 7px 11px; font-size: 11px; }
+  .bubble b { color: var(--mint); font-weight: 700; margin-right: 5px; }
+  .bubble span { color: var(--muted); }
+  .typing { display: inline-flex; gap: 4px; padding: 8px 12px; }
+  .typing i { width: 5px; height: 5px; border-radius: 50%; background: var(--faint); animation: blink 1.2s ease-in-out infinite; }
+  .typing i:nth-child(2) { animation-delay: .2s; }
+  .typing i:nth-child(3) { animation-delay: .4s; }
+  @keyframes blink { 40% { opacity: .2; } }
+
+  .meter { width: 212px; }
+  .meter .lab { font-size: 9px; letter-spacing: .2em; font-weight: 700; color: var(--faint); }
+  .meter .val { font-family: var(--mono); font-size: 27px; color: var(--mint); margin: 4px 0 11px; }
+  .meter .track { height: 8px; border-radius: 99px; background: rgba(255,255,255,.07); overflow: hidden; }
+  .meter .fill { width: 62%; height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--green), var(--lime)); }
+  .meter .sub { display: flex; justify-content: space-between; margin-top: 10px; font-family: var(--mono); font-size: 10px; color: var(--faint); }
 
   /* ---------- waitlist band ---------- */
   .band {
@@ -441,6 +492,8 @@
     .rise { animation: none; opacity: 1; transform: none; }
     .reveal { transition: none; opacity: 1; transform: none; }
     .fallback-knot svg, .fallback-knot .ring, .hint svg { animation: none; }
+    .typing i, .ticker-bug .dot { animation: none; }
+    .ev { transition: none; }
     .feature, .btn, .stat { transition: none; }
     html { scroll-behavior: auto; }
   }
@@ -469,6 +522,8 @@
 </svg>
 
 <div class="ticker" aria-hidden="true">
+  <span class="ticker-bug"><span class="dot"></span>LIVE</span>
+  <div class="ticker-view">
   <div class="ticker-track">
     <span class="ticker-item"><span class="dot"></span>PIT <span class="at">@</span> WSH <span class="t-live">LIVE 4–4</span></span>
     <span class="ticker-item"><span class="dot"></span>BAL <span class="at">@</span> CIN <span class="t-live">LIVE 1–2</span></span>
@@ -480,6 +535,7 @@
     <span class="ticker-item"><span class="dot red"></span>MIN <span class="at">@</span> NYY <span class="t-final">FINAL 11–4</span></span>
     <span class="ticker-item"><span class="dot"></span>LAD <span class="at">@</span> SF <span class="t-live">LIVE 2–0</span></span>
     <span class="ticker-item"><span class="dot red"></span>HOU <span class="at">@</span> TEX <span class="t-final">FINAL 3–5</span></span>
+  </div>
   </div>
 </div>
 
@@ -512,10 +568,10 @@
           <a class="btn btn-ghost" href="mailto:team@thebetloop.com">Contact Us</a>
         </div>
         <p class="fineprint rise d3">No spam. Opt out anytime.</p>
-        <div class="stats rise d4">
-          <div class="stat"><b>&gt;2,000</b><span>Bettors surveyed</span></div>
-          <div class="stat"><b>71%</b><span>Want a verified market</span></div>
-          <div class="stat"><b>+18.4%</b><span>Top capper 30-day ROI*</span></div>
+        <div class="board rise d4">
+          <div class="cell"><b>&gt;2,000</b><span>Bettors surveyed</span></div>
+          <div class="cell"><b>71%</b><span>Want a verified market</span></div>
+          <div class="cell"><b>+18.4%</b><span>Top capper 30-day ROI*</span></div>
         </div>
         <p class="fineprint rise d4">*Concept preview. Final product metrics will vary.</p>
       </div>
@@ -705,28 +761,49 @@
     <section class="section" id="features">
       <span class="kicker">Inside the loop</span>
       <h2>Built on real performance, not screenshots.</h2>
-      <p class="lead">Everything in the preview above is a real surface in the app.</p>
-      <div class="features">
-        <div class="feature reveal">
-          <div class="icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5z"/><path d="m9 12 2 2 4-4"/></svg>
+      <p class="lead">Not marketing claims — these are working surfaces from the product.</p>
+      <div class="evidence">
+        <div class="ev reveal">
+          <div class="ev-demo">
+            <div class="slip">
+              <span class="stamp">WON · VERIFIED</span>
+              <div class="t">Twins ML @ Yankees</div>
+              <div class="d">GRADED FROM FINAL · 11–4</div>
+              <div class="dash"></div>
+              <div class="row2"><span>acraidan</span><span>+130</span></div>
+            </div>
           </div>
-          <h3>Verified track records</h3>
-          <p>Every pick is linked to a real game and graded from the final score. Records can't be edited, cherry-picked, or deleted.</p>
+          <div class="ev-text">
+            <h3>Verified track records</h3>
+            <p>Every pick is linked to a real game and graded from the final score. Records can't be edited, cherry-picked, or deleted.</p>
+          </div>
         </div>
-        <div class="feature reveal">
-          <div class="icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-8 8H4l2-3a8 8 0 1 1 15-5z"/><path d="M8.5 12h.01M12 12h.01M15.5 12h.01"/></svg>
+        <div class="ev reveal">
+          <div class="ev-demo">
+            <div class="chatdemo">
+              <div class="bubble"><b>loopfan22</b><span>Nats bullpen is cooked, fade the 8th</span></div>
+              <div class="bubble"><b>acraidan</b><span>live line just moved to +125</span></div>
+              <div class="bubble typing" aria-label="Someone is typing"><i></i><i></i><i></i></div>
+            </div>
           </div>
-          <h3>Game Chat Hub</h3>
-          <p>Real-time scores, odds, and discussion for every live game — one loop per matchup, from first pitch to final.</p>
+          <div class="ev-text">
+            <h3>Game Chat Hub</h3>
+            <p>Real-time scores, odds, and discussion for every live game — one loop per matchup, from first pitch to final.</p>
+          </div>
         </div>
-        <div class="feature reveal">
-          <div class="icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M6 21V10m6 11V4m6 17v-9"/></svg>
+        <div class="ev reveal">
+          <div class="ev-demo">
+            <div class="meter">
+              <div class="lab">EXPECTED VALUE</div>
+              <div class="val">+6.2%</div>
+              <div class="track"><div class="fill"></div></div>
+              <div class="sub"><span>MARKET $12</span><span>214 GRADED PICKS</span></div>
+            </div>
           </div>
-          <h3>Pick Center</h3>
-          <p>Market-priced picks with AI EV tools. Creators monetize their edge; buyers see the full graded history before they pay.</p>
+          <div class="ev-text">
+            <h3>Pick Center</h3>
+            <p>Market-priced picks with AI EV tools. Creators monetize their edge; buyers see the full graded history before they pay.</p>
+          </div>
         </div>
       </div>
     </section>
