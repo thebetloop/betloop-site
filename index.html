@@ -9,7 +9,7 @@
   <meta property="og:description" content="A verified social marketplace for sports picks — built on real performance." />
   <meta property="og:type" content="website" />
   <meta name="theme-color" content="#0A0D10" />
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23A9E24A'/%3E%3Cstop offset='1' stop-color='%232FB457'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='15' fill='url(%23g)'/%3E%3Cg fill='none' stroke='%230B1210' stroke-width='5.4' stroke-linecap='round'%3E%3Crect x='23.5' y='23.5' width='17' height='17' rx='1.5'/%3E%3Ccircle cx='16.8' cy='16.8' r='8.6'/%3E%3Ccircle cx='47.2' cy='16.8' r='8.6'/%3E%3Ccircle cx='16.8' cy='47.2' r='8.6'/%3E%3Ccircle cx='47.2' cy='47.2' r='8.6'/%3E%3C/g%3E%3C/svg%3E" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23A9E24A'/%3E%3Cstop offset='1' stop-color='%232FB457'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='15' fill='url(%23g)'/%3E%3Cpath d='M40 16v32a8 8 0 1 0 8-8H16a8 8 0 1 0 8 8V16a8 8 0 1 0-8 8h32a8 8 0 1 0-8-8' fill='none' stroke='%230B1210' stroke-width='7.5' stroke-linecap='round' stroke-linejoin='round' transform='translate(4.8 4.8) scale(.85)'/%3E%3C/svg%3E" />
 </head>
 <body>
 <style>
@@ -85,7 +85,8 @@
   }
   .brand {
     display: flex; align-items: center; gap: 12px;
-    font-family: var(--display); font-weight: 800; font-size: 18px; letter-spacing: .01em;
+    font-family: var(--display); font-weight: 800; font-size: 15.5px;
+    letter-spacing: .1em; text-transform: uppercase;
     text-decoration: none;
   }
   .logo { width: 42px; height: 42px; flex: none; filter: drop-shadow(0 4px 14px rgba(47,180,87,.35)); }
@@ -450,24 +451,19 @@
     <linearGradient id="blg" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#A9E24A"/><stop offset="1" stop-color="#2FB457"/>
     </linearGradient>
+    <!-- The Bet Loop mark: one continuous Bowen-knot line — the square's
+         sides run through each corner and curl back as loops. -->
     <symbol id="bl-mark" viewBox="0 0 64 64">
       <rect width="64" height="64" rx="15" fill="url(#blg)"/>
-      <g fill="none" stroke="#0B1210" stroke-width="5.4" stroke-linecap="round" stroke-linejoin="round">
-        <rect x="23.5" y="23.5" width="17" height="17" rx="1.5"/>
-        <circle cx="16.8" cy="16.8" r="8.6"/>
-        <circle cx="47.2" cy="16.8" r="8.6"/>
-        <circle cx="16.8" cy="47.2" r="8.6"/>
-        <circle cx="47.2" cy="47.2" r="8.6"/>
-      </g>
+      <path d="M40 16v32a8 8 0 1 0 8-8H16a8 8 0 1 0 8 8V16a8 8 0 1 0-8 8h32a8 8 0 1 0-8-8"
+            fill="none" stroke="#0B1210" stroke-width="7.5"
+            stroke-linecap="round" stroke-linejoin="round"
+            transform="translate(4.8 4.8) scale(.85)"/>
     </symbol>
     <symbol id="bl-knot" viewBox="0 0 64 64">
-      <g fill="none" stroke="#2FB457" stroke-width="5.4" stroke-linecap="round" stroke-linejoin="round">
-        <rect x="23.5" y="23.5" width="17" height="17" rx="1.5"/>
-        <circle cx="16.8" cy="16.8" r="8.6"/>
-        <circle cx="47.2" cy="16.8" r="8.6"/>
-        <circle cx="16.8" cy="47.2" r="8.6"/>
-        <circle cx="47.2" cy="47.2" r="8.6"/>
-      </g>
+      <path d="M40 16v32a8 8 0 1 0 8-8H16a8 8 0 1 0 8 8V16a8 8 0 1 0-8 8h32a8 8 0 1 0-8-8"
+            fill="none" stroke="#2FB457" stroke-width="6"
+            stroke-linecap="round" stroke-linejoin="round"/>
     </symbol>
   </defs>
 </svg>
