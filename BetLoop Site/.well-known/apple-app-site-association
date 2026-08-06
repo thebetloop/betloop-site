@@ -1,0 +1,30 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appIDs": [
+          "TEAMID.com.thebetloop.tailme"
+        ],
+        "components": [
+          {
+            "/": "/auth/callback",
+            "comment": "Supabase OAuth callback"
+          },
+          {
+            "/": "/tailme/pick/*",
+            "comment": "Tail Me pick share links"
+          },
+          {
+            "/": "/tailme/profile/*",
+            "comment": "Tail Me profile links"
+          },
+          {
+            "/": "/tailme/reset-password",
+            "comment": "Tail Me password reset"
+          }
+        ]
+      }
+    ]
+  }
+}
