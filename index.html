@@ -349,7 +349,7 @@
     border-block: 1px solid var(--line-soft);
   }
   .spline-host, .showcase-fallback { position: absolute; inset: 0; }
-  .spline-host spline-viewer { width: 100%; height: 100%; display: block; }
+  .spline-host model-viewer { width: 100%; height: 100%; display: block; background: transparent; --poster-color: transparent; }
   .spline-host { opacity: 0; transition: opacity 1.4s ease; }
   .showcase.live .spline-host { opacity: 1; }
   .showcase-fallback {
@@ -858,52 +858,49 @@
   }, { threshold: 0.15 });
   document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
-  // 3D showcase: lazy-load the Spline scene as the section approaches.
-  // The branded fallback poster stays up until the scene is actually rendering,
+  // 3D showcase: lazy-load the brand knot model as the section approaches.
+  // Self-hosted viewer + mesh, so no third-party CDN is in the critical path.
+  // The branded fallback poster stays up until the model is actually rendering,
   // and remains if the viewer can't load (blocked network, save-data, errors).
-  const SPLINE_SCENE = 'https://prod.spline.design/9jqarNBszlTDknci/scene.splinecode';
-  const SPLINE_VIEWER = 'https://unpkg.com/@splinetool/viewer@1.9.28/build/spline-viewer.js';
+  const KNOT_MODEL = 'assets/betloop-knot.glb';
+  const VIEWER_JS = 'assets/model-viewer.min.js';
   const stage3d = document.getElementById('motion');
-  let splineStarted = false;
+  let viewerStarted = false;
 
-  function startSpline() {
-    if (splineStarted) return;
-    splineStarted = true;
+  function start3d() {
+    if (viewerStarted) return;
+    viewerStarted = true;
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     if (navigator.connection && navigator.connection.saveData) return;
 
-    ['https://unpkg.com', 'https://prod.spline.design'].forEach(href => {
-      const l = document.createElement('link');
-      l.rel = 'preconnect'; l.href = href; l.crossOrigin = '';
-      document.head.appendChild(l);
-    });
-
     const s = document.createElement('script');
     s.type = 'module';
-    s.src = SPLINE_VIEWER;
+    s.src = VIEWER_JS;
     document.head.appendChild(s);
 
-    customElements.whenDefined('spline-viewer').then(() => {
-      const v = document.createElement('spline-viewer');
-      v.setAttribute('url', SPLINE_SCENE);
+    customElements.whenDefined('model-viewer').then(() => {
+      const v = document.createElement('model-viewer');
+      v.setAttribute('src', KNOT_MODEL);
+      v.setAttribute('auto-rotate', '');
+      v.setAttribute('rotation-per-second', '20deg');
+      v.setAttribute('camera-controls', '');
+      v.setAttribute('disable-zoom', '');
+      v.setAttribute('disable-pan', '');
+      v.setAttribute('interaction-prompt', 'none');
+      v.setAttribute('exposure', '1.05');
+      v.setAttribute('shadow-intensity', '0');
+      v.setAttribute('environment-image', 'neutral');
+      v.setAttribute('camera-orbit', '-20deg 78deg 92%');
       stage3d.querySelector('.spline-host').appendChild(v);
 
-      const goLive = () => stage3d.classList.add('live');
-      v.addEventListener('load', goLive, { once: true });
-      // Belt and braces: reveal once the viewer's canvas is actually painting.
-      let checks = 0;
-      const poll = setInterval(() => {
-        const canvas = v.shadowRoot && v.shadowRoot.querySelector('canvas');
-        if (canvas && canvas.width > 0) { clearInterval(poll); setTimeout(goLive, 400); }
-        if (++checks > 40) clearInterval(poll);
-      }, 250);
-
+      v.addEventListener('load', () => stage3d.classList.add('live'), { once: true });
+      v.addEventListener('error', () => stage3d.classList.remove('live'), { once: true });
       v.addEventListener('pointerdown', () => stage3d.classList.add('touched'), { once: true });
     });
   }
 
   new IntersectionObserver((entries, obs) => {
-    if (entries[0].isIntersecting) { startSpline(); obs.disconnect(); }
+    if (entries[0].isIntersecting) { start3d(); obs.disconnect(); }
   }, { rootMargin: '600px' }).observe(stage3d);
 </script>
 </body>
