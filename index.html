@@ -82,7 +82,14 @@
     white-space: nowrap;
     animation: slide 36s linear infinite;
   }
-  .ticker-item { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; }
+  .ticker-item { display: inline-flex; align-items: center; gap: 7px; font-weight: 600; }
+  .tlogo {
+    width: 16px; height: 16px; border-radius: 50%; flex: none;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 8px; font-weight: 900; letter-spacing: 0;
+    font-family: system-ui, sans-serif;
+    border: 1px solid rgba(255,255,255,.16);
+  }
   .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--mint); flex: none; }
   .dot.red { background: var(--live); }
   .t-live { color: var(--mint); }
@@ -227,19 +234,13 @@
   .shield { display: grid; justify-items: center; gap: 3px; }
   .shield .stars { font-size: 6.5px; letter-spacing: .12em; color: var(--gold); }
   .shield .flag {
-    width: 27px; height: 30px;
+    width: 27px; height: 30px; overflow: hidden; display: block;
     border-radius: 6px 6px 12px 12px / 6px 6px 16px 16px;
     border: 1px solid rgba(255,255,255,.25);
     box-shadow: 0 3px 8px rgba(0,0,0,.45);
   }
+  .shield .flag svg { display: block; width: 100%; height: 100%; }
   .shield .cc { font-size: 7.5px; font-weight: 700; letter-spacing: .1em; color: var(--muted); }
-  .flag-bra { background: linear-gradient(135deg, #FFDF00 30%, #009C3B 90%); }
-  .flag-arg { background: linear-gradient(180deg, #75AADB 34%, #fff 34% 66%, #75AADB 66%); }
-  .flag-fra { background: linear-gradient(90deg, #0F4C9C 34%, #fff 34% 66%, #E8412F 66%); }
-  .flag-eng { background:
-      linear-gradient(90deg, transparent 42%, #CE1126 42% 58%, transparent 58%),
-      linear-gradient(180deg, transparent 40%, #CE1126 40% 60%, transparent 60%), #F4F4F4; }
-  .flag-por { background: linear-gradient(90deg, #10693B 40%, #DA291C 40%); }
 
   .foryou {
     display: flex; align-items: baseline; gap: 6px;
@@ -525,16 +526,16 @@
   <span class="ticker-bug"><span class="dot"></span>LIVE</span>
   <div class="ticker-view">
   <div class="ticker-track">
-    <span class="ticker-item"><span class="dot"></span>PIT <span class="at">@</span> WSH <span class="t-live">LIVE 4–4</span></span>
-    <span class="ticker-item"><span class="dot"></span>BAL <span class="at">@</span> CIN <span class="t-live">LIVE 1–2</span></span>
-    <span class="ticker-item"><span class="dot red"></span>MIN <span class="at">@</span> NYY <span class="t-final">FINAL 11–4</span></span>
-    <span class="ticker-item"><span class="dot"></span>LAD <span class="at">@</span> SF <span class="t-live">LIVE 2–0</span></span>
-    <span class="ticker-item"><span class="dot red"></span>HOU <span class="at">@</span> TEX <span class="t-final">FINAL 3–5</span></span>
-    <span class="ticker-item"><span class="dot"></span>PIT <span class="at">@</span> WSH <span class="t-live">LIVE 4–4</span></span>
-    <span class="ticker-item"><span class="dot"></span>BAL <span class="at">@</span> CIN <span class="t-live">LIVE 1–2</span></span>
-    <span class="ticker-item"><span class="dot red"></span>MIN <span class="at">@</span> NYY <span class="t-final">FINAL 11–4</span></span>
-    <span class="ticker-item"><span class="dot"></span>LAD <span class="at">@</span> SF <span class="t-live">LIVE 2–0</span></span>
-    <span class="ticker-item"><span class="dot red"></span>HOU <span class="at">@</span> TEX <span class="t-final">FINAL 3–5</span></span>
+    <span class="ticker-item"><span class="dot"></span><span class="tlogo" style="background:#27251F;color:#FDB827">P</span>PIT <span class="at">@</span> <span class="tlogo" style="background:#AB0003;color:#fff">W</span>WSH <span class="t-live">LIVE 4–4</span></span>
+    <span class="ticker-item"><span class="dot"></span><span class="tlogo" style="background:#DF4601;color:#fff">B</span>BAL <span class="at">@</span> <span class="tlogo" style="background:#C6011F;color:#fff">C</span>CIN <span class="t-live">LIVE 1–2</span></span>
+    <span class="ticker-item"><span class="dot red"></span><span class="tlogo" style="background:#002B5C;color:#fff">M</span>MIN <span class="at">@</span> <span class="tlogo" style="background:#132448;color:#fff">NY</span>NYY <span class="t-final">FINAL 11–4</span></span>
+    <span class="ticker-item"><span class="dot"></span><span class="tlogo" style="background:#005A9C;color:#fff">LA</span>LAD <span class="at">@</span> <span class="tlogo" style="background:#27251F;color:#FD5A1E">SF</span>SF <span class="t-live">LIVE 2–0</span></span>
+    <span class="ticker-item"><span class="dot red"></span><span class="tlogo" style="background:#002D62;color:#EB6E1F">H</span>HOU <span class="at">@</span> <span class="tlogo" style="background:#003278;color:#fff">T</span>TEX <span class="t-final">FINAL 3–5</span></span>
+    <span class="ticker-item"><span class="dot"></span><span class="tlogo" style="background:#27251F;color:#FDB827">P</span>PIT <span class="at">@</span> <span class="tlogo" style="background:#AB0003;color:#fff">W</span>WSH <span class="t-live">LIVE 4–4</span></span>
+    <span class="ticker-item"><span class="dot"></span><span class="tlogo" style="background:#DF4601;color:#fff">B</span>BAL <span class="at">@</span> <span class="tlogo" style="background:#C6011F;color:#fff">C</span>CIN <span class="t-live">LIVE 1–2</span></span>
+    <span class="ticker-item"><span class="dot red"></span><span class="tlogo" style="background:#002B5C;color:#fff">M</span>MIN <span class="at">@</span> <span class="tlogo" style="background:#132448;color:#fff">NY</span>NYY <span class="t-final">FINAL 11–4</span></span>
+    <span class="ticker-item"><span class="dot"></span><span class="tlogo" style="background:#005A9C;color:#fff">LA</span>LAD <span class="at">@</span> <span class="tlogo" style="background:#27251F;color:#FD5A1E">SF</span>SF <span class="t-live">LIVE 2–0</span></span>
+    <span class="ticker-item"><span class="dot red"></span><span class="tlogo" style="background:#002D62;color:#EB6E1F">H</span>HOU <span class="at">@</span> <span class="tlogo" style="background:#003278;color:#fff">T</span>TEX <span class="t-final">FINAL 3–5</span></span>
   </div>
   </div>
 </div>
@@ -607,11 +608,11 @@
               <h3>World Cup<br /><span class="grad-gold">lives here.</span></h3>
               <p>Live matches, verified picks, and creator insight for every moment.</p>
               <div class="shieldrow" aria-hidden="true">
-                <span class="shield"><span class="stars">★★★★★</span><span class="flag flag-bra"></span><span class="cc">BRA</span></span>
-                <span class="shield"><span class="stars">★★★</span><span class="flag flag-arg"></span><span class="cc">ARG</span></span>
-                <span class="shield"><span class="stars">★★</span><span class="flag flag-fra"></span><span class="cc">FRA</span></span>
-                <span class="shield"><span class="stars">★</span><span class="flag flag-eng"></span><span class="cc">ENG</span></span>
-                <span class="shield"><span class="stars">★</span><span class="flag flag-por"></span><span class="cc">POR</span></span>
+                <span class="shield"><span class="stars">★★★★★</span><span class="flag"><svg viewBox="0 0 27 30"><rect width="27" height="30" fill="#009C3B"/><polygon points="13.5,4.5 24.5,15 13.5,25.5 2.5,15" fill="#FFDF00"/><circle cx="13.5" cy="15" r="5" fill="#002776"/><path d="M9 14a10 10 0 0 1 9 2.6" fill="none" stroke="#fff" stroke-width="1.1"/></svg></span><span class="cc">BRA</span></span>
+                <span class="shield"><span class="stars">★★★</span><span class="flag"><svg viewBox="0 0 27 30"><rect width="27" height="30" fill="#74ACDF"/><rect y="10" width="27" height="10" fill="#F5F5F5"/><circle cx="13.5" cy="15" r="3.4" fill="#F6B40E"/><circle cx="13.5" cy="15" r="1.7" fill="#E3A00D"/></svg></span><span class="cc">ARG</span></span>
+                <span class="shield"><span class="stars">★★</span><span class="flag"><svg viewBox="0 0 27 30"><rect width="9" height="30" fill="#0055A4"/><rect x="9" width="9" height="30" fill="#F5F5F5"/><rect x="18" width="9" height="30" fill="#EF4135"/></svg></span><span class="cc">FRA</span></span>
+                <span class="shield"><span class="stars">★</span><span class="flag"><svg viewBox="0 0 27 30"><rect width="27" height="30" fill="#F5F5F5"/><rect x="11" width="5" height="30" fill="#CE1126"/><rect y="12.5" width="27" height="5" fill="#CE1126"/></svg></span><span class="cc">ENG</span></span>
+                <span class="shield"><span class="stars">★</span><span class="flag"><svg viewBox="0 0 27 30"><rect width="10.8" height="30" fill="#046A38"/><rect x="10.8" width="16.2" height="30" fill="#DA291C"/><circle cx="10.8" cy="15" r="4.6" fill="#FFE900"/><circle cx="10.8" cy="15" r="2.3" fill="#DA291C"/></svg></span><span class="cc">POR</span></span>
               </div>
             </div>
 
@@ -669,8 +670,8 @@
                   <span class="chip chip-free">MLB</span>
                   <span class="chip chip-live" style="margin-left:auto">● LIVE</span>
                 </div>
-                <div class="teamline"><span class="teamlogo" style="background:#241E12;color:#FDB827">P</span>Pittsburgh Pirates<span class="score">4</span></div>
-                <div class="teamline"><span class="teamlogo" style="background:#230D10;color:#FF6E6E">W</span>Washington Nationals<span class="score">4</span></div>
+                <div class="teamline"><span class="teamlogo" style="background:#27251F;color:#FDB827">P</span>Pittsburgh Pirates<span class="score">4</span></div>
+                <div class="teamline"><span class="teamlogo" style="background:#AB0003;color:#fff">W</span>Washington Nationals<span class="score">4</span></div>
                 <div class="gamefoot">
                   <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-8 8H4l2-3a8 8 0 1 1 15-5z"/></svg>
                   Game chat open
